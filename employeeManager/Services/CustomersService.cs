@@ -3,6 +3,7 @@ using employeeManager.Models;
 using employeeManager.Models.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
@@ -21,19 +22,62 @@ namespace employeeManager.Services
             this.log = logging;
         }
 
-        public async Task<bool> CreateNewCustomer(Customer customer, List<Contact> contacts)
+        public async Task<bool> CreateNewCustomer(CustomerRequest req)
         {
+            if (req == null)
+            {
+                this.log.LogError("req parameter is empty");
+                return false;
+            }
+
+            var customer = new Customer()
+            {
+                IsDeleted = false,
+                Created = DateTime.Now,
+                CustomerNumber = req.CustomerNumber,
+                Id = Nanoid.Nanoid.Generate(),
+                Name = req.Name
+            };
+
+            var contacts = req.Contacts.Select(x => 
+            {
+                return new Contact()
+                {
+                    Created = DateTime.Now,
+                    IsDeleted = false,
+                    CustomerId = customer.Id,
+                    Email = x.Email,
+                    FullName = x.FullName,
+                    Id = Nanoid.Nanoid.Generate(),
+                    OfficeNumber = x.OfficeNumber
+                };
+            
+            }).ToList();
+
+            var addresses = req.Addresses.Select(x =>
+            {
+                return new Address()
+                {
+                    Created = DateTime.Now,
+                    IsDeleted = false,
+                    City = x.City,
+                    Street = x.Street,
+                    CustomerId = customer.Id,
+                    Id = Nanoid.Nanoid.Generate()
+                };
+
+            }).ToList();
             using (nogaDBContext context = new nogaDBContext())
             {
                 try
                 {
                     await context.Customers.AddAsync(customer);
                     await context.Contacts.AddRangeAsync(contacts);
+                    await context.Addresses.AddRangeAsync(addresses);
                     await context.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {
-
                     this.log.LogError(ex, "failed to update db");
                     return await Task.FromResult(false);
                 }
@@ -189,5 +233,12 @@ namespace employeeManager.Services
             }
         }
 
+        //TODO: compete this implemenation to make a general delete, update function to all entites
+        //public async Task<bool> DeleteRecord<T>(string id) where T: IEntity
+        //{
+        //    var tt = Activator.CreateInstance<T>();
+        //    await tt.DeleteRecord(id);
+            
+        //}
     }
 }

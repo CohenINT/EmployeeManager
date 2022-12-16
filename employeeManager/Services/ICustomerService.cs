@@ -9,7 +9,7 @@ namespace employeeManager.Services
     public interface ICustomerService
     {
         public Task<List<CustomerDto>> GetCustomers();
-        public Task<bool> CreateNewCustomer(Customer customer, List<Contact> contacts);
+        public Task<bool> CreateNewCustomer(CustomerRequest req);
         public Task<DetailedCustomer> GetCustomer(string id);
         public Task<bool> UpdateAddress(AddressRequest address);
         public Task<bool> DeleteAddress(string id);

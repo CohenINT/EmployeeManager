@@ -78,7 +78,17 @@ function EnbleContactEdit(uniqueId) {
    document.getElementById(`email_${uniqueId}`).disabled = false;
 
 }
-
+function IsValidCustomerNumber(customerNumber) {
+    if (customerNumber != "" && customerNumber.length == 9) {
+        for (let i = 0; i < customerNumber.length; i++) {
+            if (!(customerNumber[i] >= '0' && customerNumber[i] <= '9'))
+                return false
+        }
+        return true;
+    }
+    return false;
+    
+}
 function SaveContactChanges(uniqueId) {
     let fullname = document.getElementById(`fullname_${uniqueId}`).value;
     let officenumber = document.getElementById(`officenumber_${uniqueId}`).value;
@@ -108,4 +118,40 @@ function SaveContactChanges(uniqueId) {
 
     });
 
+}
+function CreateCustomer() {
+    let name = document.getElementById("newCustomer_name").value;
+    let customerNumber = document.getElementById("newCustomer_customerNumber").value;
+    let city = document.getElementById("newCustomer_city").value;
+    let street = document.getElementById("newCustomer_street").value;
+    let addresses = [ {City:city,Street:street}];
+    let contact_name = document.getElementById("newCustomer_contact_fullname").value;
+    let contact_officenumber = document.getElementById("newCustomer_contact_officenumber").value;
+    let contact_email = document.getElementById("newCustomer_contact_email").value;
+    let contacts = [ { FullName: contact_name, OfficeNumber: contact_officenumber, Email: contact_email }];
+    $.ajax({
+        type: "POST",
+        url: `https://${location.host}/api/Customer/CreateCustomer`,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+           
+            Name: name,
+            CustomerNumber: customerNumber,
+            Addresses: addresses,
+            Contacts: contacts
+           
+        }),
+        success: function (data) {
+            console.log(data);
+            location.reload();
+        },
+        error: function (a, b, c) {
+            console.error(a);
+            console.error(b);
+            console.error(c);
+            debugger;
+        }
+
+    });
 }

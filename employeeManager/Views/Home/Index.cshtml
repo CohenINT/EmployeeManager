@@ -6,6 +6,38 @@
 
 
     <div>
+        <button type="button" data-toggle="modal" data-target="#CustomerModal">Add Customer</button>
+        <!-- Modal -->
+<div class="modal fade" id="CustomerModal" tabindex="-1" role="dialog" aria-labelledby="CustomerModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="CustomerModalLabel">Add customer form</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <label>Customer</label>
+        <input type="text" id="newCustomer_name" placeholder="Name"/>
+        <input type="text" id="newCustomer_customerNumber" placeholder="CustomerNumber"/>
+        <label>Contact:</label>
+       <input type="text" id="newCustomer_contact_fullname" placeholder="Contact full name"/>  
+       <input type="email" id="newCustomer_contact_email" placeholder = "email"/>
+       <input type="text" id="newCustomer_contact_officenumber" placeholder = "office number"/>
+       <label>Address:</label>
+       <input type="text" id="newCustomer_city" placeholder = "City"/>
+       <input type="text" id="newCustomer_street" placeholder="Street"/>
+      
+
+    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button onclick="CreateCustomer();" type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
     <table id="customersTb" class="table">
         <thead>
           <tr>
@@ -21,7 +53,6 @@
             @foreach (var item in Model)
             {
                           <tr onclick='redirectToView("Home","Customers","@item.Id");'>
-                          
                           <td>@item.Name</td>
                           <td>@item.IsDeleted</td>
                           <td>@item.Created</td>
@@ -33,8 +64,6 @@
                         }
                           </td>
                               
-                              
-
                         </tr>
             }
 
