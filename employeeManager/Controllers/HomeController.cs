@@ -35,24 +35,17 @@ namespace employeeManager.Controllers
             //TODO: delete this function call to avoid inserting more data to db
 
 
-            var customer = new Customer()
-            {
-                Created = DateTime.Now,
-                IsDeleted = false,
-                CustomerNumber = "5178787777",
-                Id = Nanoid.Nanoid.Generate(),
-                Name = "arold"
-            };
+            string customerId = "q1tm1nWQbNAB9YvrZliWt";
 
             var customerAddresses = new List<Address>() { new Address()
              {
 
             Id = Nanoid.Nanoid.Generate(),
             IsDeleted = false,
-            City = "new york",
+            City = "new Jerzy",
             Created = DateTime.Now,
-            CustomerId = customer.Id,
-            Street = "zerim"
+            CustomerId = customerId,
+            Street = "alora dance"
 
              }};
 
@@ -62,21 +55,21 @@ namespace employeeManager.Controllers
             {
                 IsDeleted = false,
                 Created= DateTime.Now,
-                CustomerId = customer.Id,
-                Email = "kissnlove@gmail.com",
-                FullName = "zari hembur",
+                CustomerId = customerId,
+                Email = "michale@gmail.com",
+                FullName = "miachael",
                 Id = Nanoid.Nanoid.Generate(),
-                OfficeNumber = "+517-4777443"
+                OfficeNumber = "+567-4711113"
             },
             new Contact()
             {
                 IsDeleted = false,
                 Created = DateTime.Now,
-                CustomerId = customer.Id,
-                Email = "miar.almoni@gmail.com",
-                FullName = "miar almoni",
+                CustomerId = customerId,
+                Email = "shir.lior@gmail.com",
+                FullName = "shior",
                 Id = Nanoid.Nanoid.Generate(),
-                OfficeNumber = "+315-12435447"
+                OfficeNumber = "+514-999511"
             }
             };
 
@@ -85,7 +78,7 @@ namespace employeeManager.Controllers
             {
                 try
                 {
-                    await context.Customers.AddAsync(customer);
+                    //await context.Customers.AddAsync(customer);
                     await context.Addresses.AddRangeAsync(customerAddresses);
                     await context.Contacts.AddRangeAsync(contacts);
                     await context.SaveChangesAsync();
@@ -98,7 +91,13 @@ namespace employeeManager.Controllers
             }
         }
 
-        public async Task<IActionResult> Customers([FromQuery]string Id)
+        public async Task<IActionResult> TestThis()
+        {
+            await TempCreateData();
+            return Json("allgood");
+        }
+
+        public async Task<IActionResult> Customers([FromQuery] string Id)
         {
             var dto = await this.CustomerSvc.GetCustomer(Id);
 

@@ -3,6 +3,7 @@ using employeeManager.Models;
 using employeeManager.Models.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -104,7 +105,27 @@ namespace employeeManager.Services
 
             }
         }
-
+        public async Task<bool> DeleteAddress(string id)
+        {
+            using (nogaDBContext context = new nogaDBContext())
+            {
+                try
+                {
+                    var entity = await context.Addresses.FirstOrDefaultAsync(x => x.Id == id);
+                    if (entity == null)
+                        return true;
+                    entity.IsDeleted = true;
+                    context.Addresses.Update(entity);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    this.log.LogError(ex, $"failed to delete record of Address. Address Id: {id}");
+                    return false;
+                }
+                return true;
+            }
+        }
         public async Task<bool> UpdateAddress(AddressRequest address)
         {
             using (nogaDBContext context = new nogaDBContext())
@@ -125,5 +146,48 @@ namespace employeeManager.Services
                 return true;
             }
         }
+        public async Task<bool> UpdateContact(ContactRequest contact)
+        {
+            using (nogaDBContext context = new nogaDBContext())
+            {
+                try
+                {
+                    var contactEntity = await context.Contacts.FirstOrDefaultAsync(x => x.Id == contact.Id);
+                    contactEntity.FullName = contact.FullName;
+                    contactEntity.Email = contact.Email;
+                    contactEntity.OfficeNumber = contact.OfficeNumber;
+                    context.Contacts.Update(contactEntity);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    this.log.LogError(ex, $"failed to update contact. contactId : {contact.Id}");
+                    return false;
+                }
+                return true;
+            }
+        }
+        public async Task<bool> DeleteContact(string id)
+        {
+            using (nogaDBContext context = new nogaDBContext())
+            {
+                try
+                {
+                    var entity = await context.Contacts.FirstOrDefaultAsync(x => x.Id == id);
+                    if (entity == null)
+                        return true;
+                    entity.IsDeleted = true;
+                    context.Contacts.Update(entity);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    this.log.LogError(ex, $"failed to delete record of contact.  contactId: {id}");
+                    return false;
+                }
+                return true;
+            }
+        }
+
     }
 }

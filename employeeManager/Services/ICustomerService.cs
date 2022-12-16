@@ -12,5 +12,8 @@ namespace employeeManager.Services
         public Task<bool> CreateNewCustomer(Customer customer, List<Contact> contacts);
         public Task<DetailedCustomer> GetCustomer(string id);
         public Task<bool> UpdateAddress(AddressRequest address);
+        public Task<bool> DeleteAddress(string id);
+        public Task<bool> UpdateContact(ContactRequest contact);
+        public Task<bool> DeleteContact(string id);
     }
 }
