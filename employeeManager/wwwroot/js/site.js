@@ -13,15 +13,13 @@ function redirectToView(controller, view, uniqueId) {
 }
 
 
-function EnbleAddressEdit(e) {
-    let target = e.target || e.srcElement;
-    target.parentElement.parentElement.children[0].childNodes[0].disabled = false;
-    target.parentElement.parentElement.children[1].childNodes[0].disabled = false;
+function EnbleAddressEdit(uniqueId) {
+    document.getElementById(`city_${uniqueId}`).disabled = false;
+    document.getElementById(`street_${uniqueId}`).disabled = false;
 }
 
-function DeleteAddress(e) {
-    let target = e.target || e.srcElement;
-    let Id = target.getAttribute("id");
+function DeleteAddress(uniqueId) {
+   
 
     $.ajax({
         type: "POST",
@@ -29,7 +27,7 @@ function DeleteAddress(e) {
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
-            Id: Id
+            Id: uniqueId
         }),
         success: function (data) {
             console.log(data);
@@ -42,19 +40,18 @@ function DeleteAddress(e) {
         }
     });
 }
-function SaveAddressChanges(e) {
-    let target = e.target || e.srcElement;
-    let city = target.parentElement.parentElement.children[0].childNodes[0].value;
-    let street = target.parentElement.parentElement.children[1].childNodes[0].value;
-    let Id = target.getAttribute("id");
-
+function SaveAddressChanges(uniqueId) {
+  
+    let city = document.getElementById(`city_${uniqueId}`).value;
+    let street = document.getElementById(`street_${uniqueId}`).value;
+    debugger;
     $.ajax({
         type: "POST",
         url: `https://${location.host}/api/Address/UpdateAddress`,
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
-            Id: Id,
+            Id: uniqueId,
             City: city,
             Street: street
         }),

@@ -35,11 +35,11 @@
                     <tr>
                         <td><input id="city_@address.Id" class="border-none" type="text" value="@address.City" disabled/></td>
                         <td><input id="street_@address.Id" class="border-none" type="text" value="@address.Street" disabled/></td>
-                         <td>@address.IsDeleted.ToString()</td>
+                        <td>@address.IsDeleted.ToString()</td>
                     <td>
-                            <a onclick="EnbleAddressEdit(event);" href="#">Edit</a>
-                                <a onclick="SaveAddressChanges(event);"  href="#">Save</a>
-                                <a onclick="DeleteAddress(event);"  href="#">Delete</a>
+                            <a onclick='EnbleAddressEdit("@address.Id");' href="#">Edit</a>
+                            <a onclick='SaveAddressChanges("@address.Id");'  href="#">Save</a>
+                             <a onclick='DeleteAddress("@address.Id");'  href="#">Delete</a>
 
                     </td>
                     </tr>
