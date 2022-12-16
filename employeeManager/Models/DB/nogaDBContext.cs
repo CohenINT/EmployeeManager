@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace employeeManager.Models
+namespace employeeManager.Models.DB
 {
     public partial class nogaDBContext : DbContext
     {
@@ -35,13 +35,17 @@ namespace employeeManager.Models
 
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).HasMaxLength(150);
 
                 entity.Property(e => e.City)
                     .IsRequired()
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Created).HasColumnType("datetime");
+
+                entity.Property(e => e.CustomerId)
+                    .IsRequired()
+                    .HasMaxLength(150);
 
                 entity.Property(e => e.Street)
                     .IsRequired()
@@ -50,9 +54,13 @@ namespace employeeManager.Models
 
             modelBuilder.Entity<Contact>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).HasMaxLength(150);
 
                 entity.Property(e => e.Created).HasColumnType("datetime");
+
+                entity.Property(e => e.CustomerId)
+                    .IsRequired()
+                    .HasMaxLength(150);
 
                 entity.Property(e => e.Email).HasMaxLength(50);
 
@@ -65,7 +73,7 @@ namespace employeeManager.Models
 
             modelBuilder.Entity<Customer>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                entity.Property(e => e.Id).HasMaxLength(150);
 
                 entity.Property(e => e.Created).HasColumnType("datetime");
 

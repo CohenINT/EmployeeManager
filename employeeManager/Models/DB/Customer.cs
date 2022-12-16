@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace employeeManager.Models
+namespace employeeManager.Models.DB
 {
     public partial class Customer
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime Created { get; set; }
         public string Name { get; set; }
