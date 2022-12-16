@@ -56,12 +56,12 @@ namespace employeeManager.Controllers
 
              }};
 
-            var contacts = new List<Contact>() 
+            var contacts = new List<Contact>()
             {
             new Contact()
             {
                 IsDeleted = false,
-                Created= DateTime.Now, 
+                Created= DateTime.Now,
                 CustomerId = customer.Id,
                 Email = "kissnlove@gmail.com",
                 FullName = "zari hembur",
@@ -81,7 +81,7 @@ namespace employeeManager.Controllers
             };
 
 
-            using(nogaDBContext context = new nogaDBContext())
+            using (nogaDBContext context = new nogaDBContext())
             {
                 try
                 {
@@ -93,16 +93,16 @@ namespace employeeManager.Controllers
                 catch (Exception ex)
                 {
 
-                    
+
                 }
             }
         }
 
-        public async Task<IActionResult> Customers()
+        public async Task<IActionResult> Customers([FromQuery]string Id)
         {
-          
+            var dto = await this.CustomerSvc.GetCustomer(Id);
 
-            return View();
+            return View("Customers", dto);
         }
         public IActionResult Privacy()
         {

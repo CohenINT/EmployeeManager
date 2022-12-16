@@ -1,5 +1,47 @@
 ﻿@{
     Layout = "_Layout";
-    
 }
 
+
+@model DetailedCustomer;
+
+    <table id="customersTb" class="table">
+        <thead>
+          <tr>
+              <th scope="col">Name</th>
+              <th scope="col">IsDeleted</th>
+              <th scope="col">Created</th>
+              <th scope="col">CustomerNumber</th>
+              <th scope="col">Actions</th>
+
+          </tr>
+        </thead>
+        <tbody>
+           <tr>
+               <td>@Model.Name</td>
+               <td>@Model.IsDeleted</td>
+               <td>@Model.Created</td>
+               <td>@Model.CustomerNumber</td>
+           </tr>
+            <tr>
+                <th>City</th>
+                <th>Street</th>
+                <th>IsDeleted</th>
+                <th>Actions</th>
+            </tr>
+
+        @foreach (var address in Model.Addresses)
+        {
+                <td><input id="city_@address.Id" class="border-none" type="text" value="@address.City" disabled/></td>
+                <td><input id="street_@address.Id" class="border-none" type="text" value="@address.Street" disabled/></td>
+                 <td>@address.IsDeleted.ToString()</td>
+            <td>
+                    <a onclick="EnbleAddressEdit(event);" href="#">Edit</a>
+                        <a onclick="SaveAddressChanges(event);" Id="@address.Id" href="#">Save</a>
+                        <a href="#">Delete</a>
+                        
+            </td>
+        }
+
+        </tbody>
+   </table>

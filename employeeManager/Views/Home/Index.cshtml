@@ -20,19 +20,20 @@
         <tbody>
             @foreach (var item in Model)
             {
-                        <tr>
+                          <tr onclick='redirectToView("Home","Customers","@item.Id");'>
+                          
                           <td>@item.Name</td>
                           <td>@item.IsDeleted</td>
                           <td>@item.Created</td>
-                          <td>@item.CustomerNumber</td>
+                          <td>@item.CustomerNumber</td> 
                           <td>
                         @foreach (var address in item.Addresses)
                         {
                             <p>@address.Street , @address.City</p>
                         }
                           </td>
-
-
+                              
+                              
 
                         </tr>
             }
