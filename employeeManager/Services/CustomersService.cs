@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace employeeManager.Services
             this.log = logging;
         }
 
-        public async Task<bool>IsCustomerExist(string customerNumber)
+        public async Task<bool> IsCustomerExist(string customerNumber)
         {
             using (nogaDBContext context = new nogaDBContext())
             {
@@ -39,7 +40,7 @@ namespace employeeManager.Services
                 this.log.LogError("req parameter is empty");
                 return false;
             }
-           
+
             var customer = new Customer()
             {
                 IsDeleted = false,
@@ -49,7 +50,7 @@ namespace employeeManager.Services
                 Name = req.Name
             };
 
-            var contacts = req.Contacts.Select(x => 
+            var contacts = req.Contacts.Select(x =>
             {
                 return new Contact()
                 {
@@ -61,7 +62,7 @@ namespace employeeManager.Services
                     Id = Nanoid.Nanoid.Generate(),
                     OfficeNumber = x.OfficeNumber
                 };
-            
+
             }).ToList();
 
             var addresses = req.Addresses.Select(x =>
@@ -221,6 +222,27 @@ namespace employeeManager.Services
                 return true;
             }
         }
+        public async Task<bool> UpdateCustomer(CustomerRequest customer)
+        {
+            using (nogaDBContext context = new nogaDBContext())
+            {
+                try
+                {
+                    var customerEntity = await context.Customers.FirstOrDefaultAsync(x => x.Id == customer.Id);
+                    customerEntity.Name = customer.Name;
+                    customerEntity.CustomerNumber = customer.CustomerNumber;
+                    context.Customers.Update(customerEntity);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    this.log.LogError(ex, $"failed to update customer. customerId : {customer.Id}");
+                    return false;
+                }
+                return true;
+            }
+
+        }
         public async Task<bool> DeleteContact(string id)
         {
             using (nogaDBContext context = new nogaDBContext())
@@ -242,13 +264,36 @@ namespace employeeManager.Services
                 return true;
             }
         }
+        public async Task<bool> DeleteCustomer(string id)
+        {
+            using (nogaDBContext context = new nogaDBContext())
+            {
+                try
+                {
+                    var entity = await context.Customers.FirstOrDefaultAsync(x => x.Id == id);
+                    if (entity == null)
+                        return true;
+                    entity.IsDeleted = true;
+                    context.Customers.Update(entity);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    this.log.LogError(ex, $"failed to delete record of customer.  customerId: {id}");
+                    return false;
+                }
+                return true;
+            }
+        }
+
+
 
         //TODO: compete this implemenation to make a general delete, update function to all entites
         //public async Task<bool> DeleteRecord<T>(string id) where T: IEntity
         //{
         //    var tt = Activator.CreateInstance<T>();
         //    await tt.DeleteRecord(id);
-            
+
         //}
     }
 }

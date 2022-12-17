@@ -18,6 +18,26 @@ function EnbleAddressEdit(uniqueId) {
     document.getElementById(`street_${uniqueId}`).disabled = false;
 }
 
+function DeleteCustomer(uniqueId) {
+    $.ajax({
+        type: "POST",
+        url: `https://${location.host}/api/Customer/Delete`,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+            Id: uniqueId
+        }),
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (a, b, c) {
+            console.error(a);
+            console.log(b);
+            console.log(c);
+            debugger;
+        }
+    });
+}
 function DeleteAddress(uniqueId) {
 
 
@@ -57,6 +77,7 @@ function SaveAddressChanges(uniqueId) {
         }),
         success: function (data) {
             console.log(data);
+            location.reload();
         },
         error: function (a, b, c) {
             console.error(a);
@@ -70,6 +91,12 @@ function SaveAddressChanges(uniqueId) {
 
 
 }
+
+function EnbleCustomerEdit() {
+    document.getElementById("customerName").disabled = false;
+    document.getElementById("customerNumber").disabled = false;
+}
+
 
 function EnbleContactEdit(uniqueId) {
 
@@ -88,6 +115,36 @@ function IsValidCustomerNumber(customerNumber) {
     }
     return false;
 
+}
+
+
+function SaveCustomerChanges(uniqueId) {
+
+    let customername = document.getElementById("customerName").value;
+    let customerNumber = document.getElementById("customerNumber").value;
+    $.ajax({
+        type: "POST",
+        url: `https://${location.host}/api/Customer/UpdateCustomer`,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+            Id: uniqueId,
+            CustomerNumber: customerNumber,
+            Name: customername,
+            
+        }),
+        success: function (data) {
+            console.log(data);
+            location.reload();
+        },
+        error: function (a, b, c) {
+            console.error(a);
+            console.error(b);
+            console.error(c);
+            debugger;
+        }
+
+    });
 }
 function SaveContactChanges(uniqueId) {
     let fullname = document.getElementById(`fullname_${uniqueId}`).value;
@@ -108,6 +165,7 @@ function SaveContactChanges(uniqueId) {
         }),
         success: function (data) {
             console.log(data);
+            location.reload();
         },
         error: function (a, b, c) {
             console.error(a);

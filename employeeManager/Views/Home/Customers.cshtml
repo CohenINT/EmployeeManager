@@ -7,6 +7,7 @@
 
     <table id="customersTb" class="table">
         <thead>
+            <tr><p class="p-2 h5">Customer Details :</p></tr>
           <tr>
               <th scope="col">Name</th>
               <th scope="col">IsDeleted</th>
@@ -18,33 +19,53 @@
         </thead>
         <tbody>
            <tr>
-               <td>@Model.Name</td>
-               <td>@Model.IsDeleted</td>
-               <td>@Model.Created</td>
-               <td>@Model.CustomerNumber</td>
+               <td><input id="customerName" type="text" class="border-none" value="@Model.Name"  disabled/> </td>
+               <td><input id="customerIsDeleted" type="text" class="border-none" value="@Model.IsDeleted" disabled/></td>
+               <td><input id="customerCreated" type="text" class="border-none" value="@Model.Created" disabled /></td>
+               <td><input  id="customerNumber" type="text" class="border-none" value=@Model.CustomerNumber disabled/> </td>
+                 <td>
+                     <a onclick='EnbleCustomerEdit();' href="#">Edit</a>
+                     <a onclick='SaveCustomerChanges("@Model.Id");'  href="#">Save</a>
+                     <a onclick='DeleteCustomer("@Model.Id");'  href="#">Delete</a>
+                </td>
            </tr>
+           <tbody/>
+     </table>
+
+
+     <table id="AddressTb" class="table">
+         <thead>
+               <tr><p class="p-2 h5">Addresses Details :</p></tr>
             <tr>
                 <th>City</th>
                 <th>Street</th>
                 <th>IsDeleted</th>
                 <th>Actions</th>
             </tr>
+            </thead>
+        <tbody>
 
         @foreach (var address in Model.Addresses)
         {
-                    <tr>
-                        <td><input id="city_@address.Id" class="border-none" type="text" value="@address.City" disabled/></td>
-                        <td><input id="street_@address.Id" class="border-none" type="text" value="@address.Street" disabled/></td>
-                        <td>@address.IsDeleted.ToString()</td>
-                    <td>
-                            <a onclick='EnbleAddressEdit("@address.Id");' href="#">Edit</a>
-                            <a onclick='SaveAddressChanges("@address.Id");'  href="#">Save</a>
-                             <a onclick='DeleteAddress("@address.Id");'  href="#">Delete</a>
+                        <tr>
+                            <td><input id="city_@address.Id" class="border-none" type="text" value="@address.City" disabled/></td>
+                            <td><input id="street_@address.Id" class="border-none" type="text" value="@address.Street" disabled/></td>
+                            <td>@address.IsDeleted.ToString()</td>
+                        <td>
+                                <a onclick='EnbleAddressEdit("@address.Id");' href="#">Edit</a>
+                                <a onclick='SaveAddressChanges("@address.Id");'  href="#">Save</a>
+                                 <a onclick='DeleteAddress("@address.Id");'  href="#">Delete</a>
 
-                    </td>
-                    </tr>
+                        </td>
+                        </tr>
         }
 
+        </tbody>
+        </table>
+
+        <table id="ContactTb" class="table">
+            <thead>
+                  <tr><p class="p-2 h5">Contacts Details :</p></tr>
         <tr>
                 <th>FullName </th> 
                 <th>OfficeNumber </th>
@@ -52,21 +73,23 @@
                 <th>IsDeleted</th>
                 <th>Actions</th>
         </tr>
+        </thead>
+        <tbody>
         @foreach (var contact in Model.Contacts)
         {
             string classUniqueId = $"contact_input_{contact.Id}";
-                <tr>
-                            <td><input id='fullname_@contact.Id' type="text" class="border-none @classUniqueId" value="@contact.FullName"  disabled/></td>
-                            <td><input id='officenumber_@contact.Id' type="text" class="border-none @classUniqueId" value="@contact.OfficeNumber" disabled /></td>
-                            <td><input id='email_@contact.Id' type="text" class="border-none @classUniqueId" value="@contact.Email" disabled /></td>
-                            <td><input type="text" class="border-none" value="@contact.IsDeleted.ToString()" disabled /></td>
-                            <td>
-                                    <a onclick='EnbleContactEdit("@contact.Id");' href="#">Edit</a>
-                                    <a onclick='SaveContactChanges("@contact.Id");'  href="#">Save</a>
-                                    <a onclick='DeleteContact("@contact.Id");'  href="#">Delete</a>
+                    <tr>
+                                <td><input id='fullname_@contact.Id' type="text" class="border-none @classUniqueId" value="@contact.FullName"  disabled/></td>
+                                <td><input id='officenumber_@contact.Id' type="text" class="border-none @classUniqueId" value="@contact.OfficeNumber" disabled /></td>
+                                <td><input id='email_@contact.Id' type="text" class="border-none @classUniqueId" value="@contact.Email" disabled /></td>
+                                <td><input type="text" class="border-none" value="@contact.IsDeleted.ToString()" disabled /></td>
+                                <td>
+                                        <a onclick='EnbleContactEdit("@contact.Id");' href="#">Edit</a>
+                                        <a onclick='SaveContactChanges("@contact.Id");'  href="#">Save</a>
+                                        <a onclick='DeleteContact("@contact.Id");'  href="#">Delete</a>
 
-                        </td>
-                </tr>
+                            </td>
+                    </tr>
         }
 
 

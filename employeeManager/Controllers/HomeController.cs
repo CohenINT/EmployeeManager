@@ -93,7 +93,6 @@ namespace employeeManager.Controllers
 
         public async Task<IActionResult> TestThis()
         {
-            await TempCreateData();
             return Json("allgood");
         }
 

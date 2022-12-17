@@ -37,6 +37,27 @@ namespace employeeManager.API
             return Json(new { result = isExist });
 
         }
+        [HttpPost]
+        public async Task<IActionResult> Delete(CustomerRequest req)
+        {
+            if (req == null)
+                return BadRequest("check request parameters");
+            bool isSucess = await this.CustomerSvc.DeleteCustomer(req.Id);
+            return Json(new { result = isSucess });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateCustomer(CustomerRequest req)
+        {
+            if (req == null)
+                return BadRequest("check request parameters");
+
+            bool isSucess = await this.CustomerSvc.UpdateCustomer(req);
+            if (!isSucess)
+                return Json(new { result = "failed" });
+
+            return Json(new { result = "all good" });
+        }
 
 
     }
