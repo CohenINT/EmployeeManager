@@ -22,6 +22,16 @@ namespace employeeManager.Services
             this.log = logging;
         }
 
+        public async Task<bool>IsCustomerExist(string customerNumber)
+        {
+            using (nogaDBContext context = new nogaDBContext())
+            {
+                var c = await context.Customers.FirstOrDefaultAsync(x => x.CustomerNumber == customerNumber);
+                if (c == null)
+                    return false;
+            }
+            return true;
+        }
         public async Task<bool> CreateNewCustomer(CustomerRequest req)
         {
             if (req == null)
@@ -29,7 +39,7 @@ namespace employeeManager.Services
                 this.log.LogError("req parameter is empty");
                 return false;
             }
-
+           
             var customer = new Customer()
             {
                 IsDeleted = false,

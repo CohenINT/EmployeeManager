@@ -27,6 +27,14 @@ namespace employeeManager.API
             return Json(new { result = isSucess });
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> IsCustomerExist(string CustomerNumber)
+        {
+            bool isExist = await this.CustomerSvc.IsCustomerExist(CustomerNumber);
+            return Json(new { result = isExist });
+
+        }
+
+
     }
 }

@@ -119,28 +119,72 @@ function SaveContactChanges(uniqueId) {
     });
 
 }
+function IsCustomerExist(customerNum) {
+    debugger;
+    $.ajax({
+        type: "POST",
+        url: `https://${location.host}/api/Customer/IsCustomerExist`,
+        contentType: "application/json",
+        dataType: "json",
+        data: JSON.stringify({
+
+            CustomerNumber: customerNum
+
+        }),
+        success: function (data) {
+            console.log(data);
+            return true;
+            
+        },
+        error: function (a, b, c) {
+            console.error(a);
+            console.error(b);
+            console.error(c);
+            
+            return false;
+        }
+
+    });
+}
 function CreateCustomer() {
     let name = document.getElementById("newCustomer_name").value;
     let customerNumber = document.getElementById("newCustomer_customerNumber").value;
+    let isExist = IsCustomerExist(customerNumber);
+    //TODO: createa a promise
+    //if (isExist) {
+    //    alert("Customer already exist");
+    //    return;
+    //}
+    //else {
+    //    CreateCustomerAjax(name, customerNumber);
+    //}
+
+    CreateCustomerAjax(name, customerNumber);
+
+    
+}
+
+
+    function CreateCustomerAjax(name, customerNumber) {
     let city = document.getElementById("newCustomer_city").value;
     let street = document.getElementById("newCustomer_street").value;
-    let addresses = [ {City:city,Street:street}];
+    let addresses = [{ City: city, Street: street }];
     let contact_name = document.getElementById("newCustomer_contact_fullname").value;
     let contact_officenumber = document.getElementById("newCustomer_contact_officenumber").value;
     let contact_email = document.getElementById("newCustomer_contact_email").value;
-    let contacts = [ { FullName: contact_name, OfficeNumber: contact_officenumber, Email: contact_email }];
+    let contacts = [{ FullName: contact_name, OfficeNumber: contact_officenumber, Email: contact_email }];
     $.ajax({
         type: "POST",
         url: `https://${location.host}/api/Customer/CreateCustomer`,
         contentType: "application/json",
         dataType: "json",
         data: JSON.stringify({
-           
+
             Name: name,
             CustomerNumber: customerNumber,
             Addresses: addresses,
             Contacts: contacts
-           
+
         }),
         success: function (data) {
             console.log(data);

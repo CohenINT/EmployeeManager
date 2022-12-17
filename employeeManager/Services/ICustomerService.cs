@@ -15,5 +15,6 @@ namespace employeeManager.Services
         public Task<bool> DeleteAddress(string id);
         public Task<bool> UpdateContact(ContactRequest contact);
         public Task<bool> DeleteContact(string id);
+        public Task<bool> IsCustomerExist(string customerNumber);
     }
 }
