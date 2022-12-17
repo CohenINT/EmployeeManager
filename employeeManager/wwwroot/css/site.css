@@ -74,3 +74,7 @@ body {
 .border-none {
     border-style: none;
 }
+
+tr :hover {
+    background-color: lightblue;
+}
