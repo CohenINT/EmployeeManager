@@ -19,7 +19,7 @@ function EnbleAddressEdit(uniqueId) {
 }
 
 function DeleteAddress(uniqueId) {
-   
+
 
     $.ajax({
         type: "POST",
@@ -41,7 +41,7 @@ function DeleteAddress(uniqueId) {
     });
 }
 function SaveAddressChanges(uniqueId) {
-  
+
     let city = document.getElementById(`city_${uniqueId}`).value;
     let street = document.getElementById(`street_${uniqueId}`).value;
     debugger;
@@ -72,10 +72,10 @@ function SaveAddressChanges(uniqueId) {
 }
 
 function EnbleContactEdit(uniqueId) {
-  
-   document.getElementById(`fullname_${uniqueId}`).disabled= false;
-   document.getElementById(`officenumber_${uniqueId}`).disabled = false;
-   document.getElementById(`email_${uniqueId}`).disabled = false;
+
+    document.getElementById(`fullname_${uniqueId}`).disabled = false;
+    document.getElementById(`officenumber_${uniqueId}`).disabled = false;
+    document.getElementById(`email_${uniqueId}`).disabled = false;
 
 }
 function IsValidCustomerNumber(customerNumber) {
@@ -87,7 +87,7 @@ function IsValidCustomerNumber(customerNumber) {
         return true;
     }
     return false;
-    
+
 }
 function SaveContactChanges(uniqueId) {
     let fullname = document.getElementById(`fullname_${uniqueId}`).value;
@@ -104,7 +104,7 @@ function SaveContactChanges(uniqueId) {
             Id: uniqueId,
             FullName: fullname,
             Email: email,
-            OfficeNumber:officenumber
+            OfficeNumber: officenumber
         }),
         success: function (data) {
             console.log(data);
@@ -119,53 +119,44 @@ function SaveContactChanges(uniqueId) {
     });
 
 }
-function IsCustomerExist(customerNum) {
-    debugger;
+function CreateCustomer() {
+    let name = document.getElementById("newCustomer_name").value;
+    let customerNumber = document.getElementById("newCustomer_customerNumber").value;
+  
     $.ajax({
         type: "POST",
         url: `https://${location.host}/api/Customer/IsCustomerExist`,
         contentType: "application/json",
         dataType: "json",
+        async: false,
         data: JSON.stringify({
 
-            CustomerNumber: customerNum
+            CustomerNumber: customerNumber
 
         }),
         success: function (data) {
             console.log(data);
-            return true;
-            
+            if (data.result) {
+                alert("Customer already exist");
+                return;
+            }
+            else {
+                CreateCustomerAjax(name, customerNumber);
+            }
         },
         error: function (a, b, c) {
             console.error(a);
             console.error(b);
             console.error(c);
-            
-            return false;
         }
 
     });
-}
-function CreateCustomer() {
-    let name = document.getElementById("newCustomer_name").value;
-    let customerNumber = document.getElementById("newCustomer_customerNumber").value;
-    let isExist = IsCustomerExist(customerNumber);
-    //TODO: createa a promise
-    //if (isExist) {
-    //    alert("Customer already exist");
-    //    return;
-    //}
-    //else {
-    //    CreateCustomerAjax(name, customerNumber);
-    //}
 
-    CreateCustomerAjax(name, customerNumber);
-
-    
 }
 
 
-    function CreateCustomerAjax(name, customerNumber) {
+
+function CreateCustomerAjax(name, customerNumber) {
     let city = document.getElementById("newCustomer_city").value;
     let street = document.getElementById("newCustomer_street").value;
     let addresses = [{ City: city, Street: street }];
@@ -194,7 +185,7 @@ function CreateCustomer() {
             console.error(a);
             console.error(b);
             console.error(c);
-            debugger;
+           
         }
 
     });

@@ -21,16 +21,19 @@ namespace employeeManager.API
         [HttpPost]
         public async Task<IActionResult> CreateCustomer(CustomerRequest req)
         {
-            if (req == null)
+            if (req == null || string.IsNullOrEmpty(req.CustomerNumber) || string.IsNullOrEmpty(req.Name))
                 return BadRequest("check request parameters");
             bool isSucess = await this.CustomerSvc.CreateNewCustomer(req);
             return Json(new { result = isSucess });
         }
 
         [HttpPost]
-        public async Task<IActionResult> IsCustomerExist(string CustomerNumber)
+        public async Task<IActionResult> IsCustomerExist(CustomerRequest req)
         {
-            bool isExist = await this.CustomerSvc.IsCustomerExist(CustomerNumber);
+            if (req == null || string.IsNullOrEmpty(req.CustomerNumber))
+                return BadRequest("check request parameters");
+
+            bool isExist = await this.CustomerSvc.IsCustomerExist(req.CustomerNumber);
             return Json(new { result = isExist });
 
         }
